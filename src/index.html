@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <title>Softuni Wizard</title>
 </head>
+
 <body>
     <div class="game-section">
         <div class="game-score">1500 points</div>
@@ -27,12 +29,21 @@
 
         function onGameStart(e) {
             e.currentTarget.classList.add('hide');
-           
+
             const wizard = document.createElement('div');
             wizard.classList.add('wizard');
             wizard.style.top = '200px';
             wizard.style.left = '300px';
             gameArea.appendChild(wizard);
+
+            window.requestAnimationFrame(gameAction);
+
+        }
+
+        function gameAction() { // Game loop
+            
+
+            window.requestAnimationFrame(gameAction);
         }
 
         function onKeyDown(e) {
@@ -45,4 +56,5 @@
         }
     </script>
 </body>
+
 </html>
