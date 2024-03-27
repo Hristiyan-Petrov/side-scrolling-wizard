@@ -37,5 +37,9 @@ body {
 }
 
 .wizard {
-    background-image: url();
+    position: absolute;
+    width: 82px;
+    height: 100px;
+    background-image: url(./images/wizard.png);
+    background-size: cover;
 }
