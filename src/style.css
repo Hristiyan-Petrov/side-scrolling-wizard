@@ -3,6 +3,10 @@ body {
     font-family: consolas;
 }
 
+.hide {
+    display: none;
+}
+
 .game-section {
     /* position: relative; */
 }
@@ -26,7 +30,7 @@ body {
     padding: 50px;
 }
 
-.score {
+.game-score {
     background-color: black;
     color: white;
     text-align: center;
