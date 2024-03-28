@@ -30,7 +30,7 @@
 
         let player = {
             x: 150,
-            y: 300,
+            y: 150,
             width: 0,
             heigth: 0
         };
@@ -61,7 +61,7 @@
 
         function gameAction() { // Game loop
             const wizard = document.querySelector('.wizard');
-            
+
             scene.score++;
 
             // Apply gravitation
@@ -85,6 +85,13 @@
 
             if (keys.ArrowRight && player.x + player.width < gameArea.offsetWidth) {
                 player.x += game.speed * game.movingMultiplier;
+            }
+
+            // Fire with space
+            if (keys.Space) {
+                wizard.classList.add('wizard-fire') 
+            } else {
+                wizard.classList.remove('wizard-fire');
             }
 
             // Apply movement
