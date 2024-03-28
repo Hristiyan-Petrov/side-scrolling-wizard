@@ -4,7 +4,6 @@
 
 // Include visualization, DOM manipulations and exclude logic, operations, calculations (positioning, collision detecting)
 
-
 const gameStart = document.querySelector('.game-start');
 const gameArea = document.querySelector('.game-area');
 const gameOver = document.querySelector('.game-over');
@@ -14,8 +13,6 @@ const gamePoints = gameScore.querySelector('.points');
 gameStart.addEventListener('click', onGameStart);
 document.addEventListener('keydown', onKeyDown);
 document.addEventListener('keyup', onKeyUp);
-
-
 
 function onGameStart(e) {
     e.currentTarget.classList.add('hide');
@@ -28,11 +25,42 @@ function onGameStart(e) {
     player.width = wizard.offsetWidth;
     player.heigth = wizard.offsetHeight;
 
-    window.requestAnimationFrame(gameAction);
-
+    window.requestAnimationFrame(frame(0));
 }
 
+// Curring explanation for current context - Analogues
+// const gameAction = (t1) => (t1) {
+//     // Code...
+//     return ...
+// }
+// ------------- OR -------------
+// function gameAction(t1) {
+//     return function (t2) {
+//         // Code...
+//     }
+// }
+// ------------- OR-------------
+// let returnedFunc = gameAction(0);
+// returnedFunc(100)
+// ------------- OR-------------
+// gameAction(0)(100)
+
+// const gameAction = (t1) => function (timestamp) { // Or this
+const frame = t1 => timestamp => { // t1 is the last time at which the game frame was updated; timestapm is the current time; everything is in ms
+    if (timestamp - t1 > game.frameLength) {
+        // Render the new frame 
+        gameAction(timestamp);
+        // if (scene.isActiveGame) return;
+        scene.isActiveGame && window.requestAnimationFrame(frame(timestamp)); // If the first is true, then execute the after '&&'
+    } else {
+        // Call the next frame without calling anything
+        window.requestAnimationFrame(frame(t1));
+    }
+}
+
+
 function gameAction(timestamp) { // Game loop
+
     const wizard = document.querySelector('.wizard');
 
     scene.score++;
@@ -150,9 +178,4 @@ function gameAction(timestamp) { // Game loop
 
     //Apply score
     gamePoints.textContent = scene.score;
-
-    if (scene.isActiveGame) {
-        window.requestAnimationFrame(gameAction);
-    }
 }
-

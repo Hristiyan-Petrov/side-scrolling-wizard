@@ -17,16 +17,6 @@ let player = {
     lastTimeFiredFireball: 0
 };
 
-let game = {
-    speed: 2,
-    movingMultiplier: 4,
-    fireballMultiplier: 5,
-    fireInterval: 1000, // 1000 ms
-    cloudSpawnInterval: 2500,
-    bugSpawnInterval: 500,
-    bugKillBonus: 2000
-};
-
 let scene = {
     isActiveGame: true,
     score: 0,
