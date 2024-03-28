@@ -14,6 +14,8 @@ gameStart.addEventListener('click', onGameStart);
 document.addEventListener('keydown', onKeyDown);
 document.addEventListener('keyup', onKeyUp);
 
+let state = initialState();
+
 function onGameStart(e) {
     e.currentTarget.classList.add('hide');
 
@@ -48,8 +50,9 @@ function onGameStart(e) {
 // const draw = (t1) => function (timestamp) { // Or this
 const frame = t1 => timestamp => { // t1 is the last time at which the game frame was updated; timestapm is the current time; everything is in ms
     if (timestamp - t1 > game.frameLength) {
-        // Render the new frame 
-        draw(timestamp);
+        // Render (draw) the new frame
+        state = next(state); // Update the state on every frame draw
+        draw(timestamp, state);
         // if (state.scene.isActiveGame) return;
         state.scene.isActiveGame && window.requestAnimationFrame(frame(timestamp)); // If the first is true, then execute the after '&&'
     } else {
@@ -59,7 +62,7 @@ const frame = t1 => timestamp => { // t1 is the last time at which the game fram
 }
 
 
-function draw(timestamp) { // Game loop
+function draw(timestamp, state) { // Game loop; get the new state as param
 
     const wizard = document.querySelector('.wizard');
 

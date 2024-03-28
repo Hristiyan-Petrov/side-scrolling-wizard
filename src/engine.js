@@ -9,7 +9,7 @@
 
 let keys = {};
 
-let state = {
+const initialState = () => ({ // Outer brackets in return are required for short-hand syntax for directly object returning
     player: {
         x: 150,
         y: 150,
@@ -22,8 +22,19 @@ let state = {
         score: 0,
         lastCloudSpawn: 0, // time
         lastBugSpawn: 0
-    }
-}
+    },
+    clouds: [],
+    attacks: [],
+    bugs: []
+});
+
+const next = (state) => ({ // Outer brackets in return are required for short-hand syntax for directly object returning
+    player: state.player,
+    scene: state.scene,
+    clouds: state.clouds,
+    attacks: state.attacks,
+    bugs: state.bugs
+});
 
 function isCollision(firstElement, secondElement) {
     let firstRect = firstElement.getBoundingClientRect();
