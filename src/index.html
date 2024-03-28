@@ -64,6 +64,13 @@
 
             scene.score++;
 
+            // Modify fireballs positions
+            let fireballs = document.querySelectorAll('.fireball');
+            fireballs.forEach(fireball => {
+                fireball.x += game.speed;
+                fireball.style.left = fireball.x + 'px';
+            });
+
             // Apply gravitation
             let isInAir = player.y + player.heigth <= gameArea.offsetHeight;
             if (isInAir) {
@@ -89,7 +96,9 @@
 
             // Fire with space
             if (keys.Space) {
-                wizard.classList.add('wizard-fire') 
+                wizard.classList.add('wizard-fire');
+                // Add fireball
+                addFireball(player);
             } else {
                 wizard.classList.remove('wizard-fire');
             }
@@ -102,6 +111,17 @@
             gamePoints.textContent = scene.score;
 
             window.requestAnimationFrame(gameAction);
+        }
+
+        function addFireball(player) {
+            let fireball = document.createElement('div');
+            fireball.classList.add('fireball');
+
+            // Set starting (spawning) position based on player position
+            fireball.style.top = (player.y + player.heigth / 3  - 5) + 'px';
+            fireball.x = player.x + player.width;
+            fireball.style.left = fireball.x + 'px';
+            gameArea.appendChild(fireball);
         }
 
         function onKeyDown(e) {
