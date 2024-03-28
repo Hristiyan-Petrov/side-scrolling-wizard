@@ -66,3 +66,12 @@ body {
     background-image: url(./images/cloud.png);
     background-size: cover;
 }
+
+.bug {
+    z-index: 0;
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-image: url(./images/bug.png);
+    background-size: cover;
+}
