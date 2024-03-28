@@ -117,7 +117,6 @@
             });
 
 
-
             // Modify fireballs positions
             let fireballs = document.querySelectorAll('.fireball');
             fireballs.forEach(fireball => {
@@ -158,9 +157,18 @@
                 // Add fireball
                 addFireball(player);
                 player.lastTimeFiredFireball = timestamp;
+                isCollision(wizard, wizard);
             } else {
                 wizard.classList.remove('wizard-fire');
             }
+
+
+            // Collision detection
+            bugs.forEach(bug => {
+                if (isCollision(wizard, bug)) {
+                    console.log('Collision!');
+                }
+            });
 
             // Apply movement
             wizard.style.top = player.y + 'px';
@@ -170,6 +178,16 @@
             gamePoints.textContent = scene.score;
 
             window.requestAnimationFrame(gameAction);
+        }
+
+        function isCollision(firstElement, secondElement) {
+            let firstRect = firstElement.getBoundingClientRect();
+            let secondRect = secondElement.getBoundingClientRect();
+
+            return !(firstRect.top > secondRect.bottom ||
+                firstRect.bottom < secondRect.top ||
+                firstRect.right < secondRect.left ||
+                firstRect.left > secondRect.right);
         }
 
         function addFireball(player) {
