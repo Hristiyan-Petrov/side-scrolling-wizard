@@ -50,8 +50,8 @@ const frame = t1 => timestamp => { // t1 is the last time at which the game fram
     if (timestamp - t1 > game.frameLength) {
         // Render the new frame 
         draw(timestamp);
-        // if (scene.isActiveGame) return;
-        scene.isActiveGame && window.requestAnimationFrame(frame(timestamp)); // If the first is true, then execute the after '&&'
+        // if (state.scene.isActiveGame) return;
+        state.scene.isActiveGame && window.requestAnimationFrame(frame(timestamp)); // If the first is true, then execute the after '&&'
     } else {
         // Call the next frame without calling anything
         window.requestAnimationFrame(frame(t1));
@@ -63,10 +63,10 @@ function draw(timestamp) { // Game loop
 
     const wizard = document.querySelector('.wizard');
 
-    scene.score++;
+    state.scene.score++;
 
     // Add bugs - antagonists (bad guys)
-    if (timestamp - scene.lastBugSpawn > game.bugSpawnInterval + 10 * Math.random()) {
+    if (timestamp - state.scene.lastBugSpawn > game.bugSpawnInterval + 10 * Math.random()) {
         let bug = document.createElement('div');
         bug.classList.add('bug');
         bug.x = gameArea.offsetWidth - (60);
@@ -74,11 +74,11 @@ function draw(timestamp) { // Game loop
         bug.style.top = (gameArea.offsetHeight - 60) * Math.random() + 'px'; // Spawn bugs at different hight levels - more natural looking
 
         gameArea.appendChild(bug);
-        scene.lastBugSpawn = timestamp;
+        state.scene.lastBugSpawn = timestamp;
     }
 
     // Add clouds in background - imitate forward player movement
-    if (timestamp - scene.lastCloudSpawn > game.cloudSpawnInterval + 10 * Math.random()) {
+    if (timestamp - state.scene.lastCloudSpawn > game.cloudSpawnInterval + 10 * Math.random()) {
         let cloud = document.createElement('div');
         cloud.classList.add('cloud');
         cloud.x = gameArea.offsetWidth - (200);
@@ -86,7 +86,7 @@ function draw(timestamp) { // Game loop
         cloud.style.top = (gameArea.offsetHeight - 200) * Math.random() + 'px'; // Spawn clouds at different hight levels - more natural looking
 
         gameArea.appendChild(cloud);
-        scene.lastCloudSpawn = timestamp;
+        state.scene.lastCloudSpawn = timestamp;
     }
 
     // Modify bug positions
@@ -165,7 +165,7 @@ function draw(timestamp) { // Game loop
 
         fireballs.forEach(fireball => {
             if (isCollision(fireball, bug)) {
-                scene.score += game.bugKillBonus;
+                state.scene.score += game.bugKillBonus;
                 bug.remove();
                 fireball.remove();
             }
@@ -177,5 +177,5 @@ function draw(timestamp) { // Game loop
     wizard.style.left = state.player.x + 'px';
 
     //Apply score
-    gamePoints.textContent = scene.score;
+    gamePoints.textContent = state.scene.score;
 }
