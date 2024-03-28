@@ -15,6 +15,8 @@ const initialState = options => ({ // Outer brackets in return are required for 
         y: 150,
         width: 0,
         heigth: 0,
+        w: 0,
+        h: 0,
         lastTimeFiredFireball: 0
     },
     scene: scene = {
@@ -51,6 +53,11 @@ const nextBugs = s => s.bugs
             removeEl(b.el);
             return false;
         }
+
+        if (isCol(s.player, b)) {
+            gameOverAction();
+        }
+
         return true;
     })
     .map(b => {

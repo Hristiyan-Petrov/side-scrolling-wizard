@@ -29,8 +29,13 @@ function onGameStart(e) {
     wizard.style.top = state.player.y + 'px';
     wizard.style.left = state.player.x + 'px';
     gameArea.appendChild(wizard);
+
+    // These 2 must be set at initialState! - refactor later
     state.player.width = wizard.offsetWidth;
     state.player.heigth = wizard.offsetHeight;
+
+    state.player.w = wizard.offsetWidth;
+    state.player.h = wizard.offsetHeight;
 
     window.requestAnimationFrame(frame(0));
 }
@@ -87,6 +92,8 @@ function draw(timestamp, state) { // Game loop; get the new state as param
         state.bugs.push({
             x: gameArea.offsetWidth - 60,
             y: (gameArea.offsetHeight - 60) * Math.random(),
+            w: bug.offsetHeight, 
+            h: bug.offsetHeight,
             el: bug
         });
     }
@@ -105,14 +112,16 @@ function draw(timestamp, state) { // Game loop; get the new state as param
 
     // Modify bug positions
     let bugs = document.querySelectorAll('.bug');
-    bugs.forEach(bug => {
-        bug.x -= game.speed * 6;
-        bug.style.left = bug.x + 'px';
+    // bugs.forEach(bug => {
+    //     bug.x -= game.speed * 6;
+    //     bug.style.left = bug.x + 'px';
 
-        if (bug.x + bug.offsetWidth <= 0) {
-            bug.remove();
-        }
-    });
+    //     if (bug.x + bug.offsetWidth <= 0) {
+    //         bug.remove();
+    //     }
+    // });
+
+    state.bugs.forEach(b => b.el.style.left = b.x + 'px');
 
     // Modify cloud positions
     let clouds = document.querySelectorAll('.cloud');
@@ -176,9 +185,9 @@ function draw(timestamp, state) { // Game loop; get the new state as param
 
     // ! Collision detection !
     bugs.forEach(bug => {
-        if (isCollision(wizard, bug)) {
-            gameOverAction();
-        }
+        // if (isCollision(wizard, bug)) {
+        //     gameOverAction();
+        // }
 
         fireballs.forEach(fireball => {
             if (isCollision(fireball, bug)) {
