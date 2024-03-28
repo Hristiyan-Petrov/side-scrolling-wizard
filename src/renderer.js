@@ -19,37 +19,37 @@ function onGameStart(e) {
 
     const wizard = document.createElement('div');
     wizard.classList.add('wizard');
-    wizard.style.top = player.y + 'px';
-    wizard.style.left = player.x + 'px';
+    wizard.style.top = state.player.y + 'px';
+    wizard.style.left = state.player.x + 'px';
     gameArea.appendChild(wizard);
-    player.width = wizard.offsetWidth;
-    player.heigth = wizard.offsetHeight;
+    state.player.width = wizard.offsetWidth;
+    state.player.heigth = wizard.offsetHeight;
 
     window.requestAnimationFrame(frame(0));
 }
 
 // Curring explanation for current context - Analogues
-// const gameAction = (t1) => (t1) {
+// const draw = (t1) => (t1) {
 //     // Code...
 //     return ...
 // }
 // ------------- OR -------------
-// function gameAction(t1) {
+// function draw(t1) {
 //     return function (t2) {
 //         // Code...
 //     }
 // }
 // ------------- OR-------------
-// let returnedFunc = gameAction(0);
+// let returnedFunc = draw(0);
 // returnedFunc(100)
 // ------------- OR-------------
-// gameAction(0)(100)
+// draw(0)(100)
 
-// const gameAction = (t1) => function (timestamp) { // Or this
+// const draw = (t1) => function (timestamp) { // Or this
 const frame = t1 => timestamp => { // t1 is the last time at which the game frame was updated; timestapm is the current time; everything is in ms
     if (timestamp - t1 > game.frameLength) {
         // Render the new frame 
-        gameAction(timestamp);
+        draw(timestamp);
         // if (scene.isActiveGame) return;
         scene.isActiveGame && window.requestAnimationFrame(frame(timestamp)); // If the first is true, then execute the after '&&'
     } else {
@@ -59,7 +59,7 @@ const frame = t1 => timestamp => { // t1 is the last time at which the game fram
 }
 
 
-function gameAction(timestamp) { // Game loop
+function draw(timestamp) { // Game loop
 
     const wizard = document.querySelector('.wizard');
 
@@ -123,34 +123,34 @@ function gameAction(timestamp) { // Game loop
     });
 
     // Apply gravitation
-    let isInAir = player.y + player.heigth <= gameArea.offsetHeight;
+    let isInAir = state.player.y + state.player.heigth <= gameArea.offsetHeight;
     if (isInAir) {
-        player.y += game.speed;
+        state.player.y += game.speed;
     }
 
     // Register user inpput
-    if (keys.ArrowUp && player.y > 0) {
-        player.y -= game.speed * game.movingMultiplier;
+    if (keys.ArrowUp && state.player.y > 0) {
+        state.player.y -= game.speed * game.movingMultiplier;
     }
 
     if (keys.ArrowDown && isInAir) {
-        player.y += game.speed * game.movingMultiplier;
+        state.player.y += game.speed * game.movingMultiplier;
     }
 
-    if (keys.ArrowLeft && player.x > 0) {
-        player.x -= game.speed * game.movingMultiplier;
+    if (keys.ArrowLeft && state.player.x > 0) {
+        state.player.x -= game.speed * game.movingMultiplier;
     }
 
-    if (keys.ArrowRight && player.x + player.width < gameArea.offsetWidth) {
-        player.x += game.speed * game.movingMultiplier;
+    if (keys.ArrowRight && state.player.x + state.player.width < gameArea.offsetWidth) {
+        state.player.x += game.speed * game.movingMultiplier;
     }
 
     // Fire with space
-    if (keys.Space && timestamp - player.lastTimeFiredFireball > game.fireInterval) {
+    if (keys.Space && timestamp - state.player.lastTimeFiredFireball > game.fireInterval) {
         wizard.classList.add('wizard-fire');
         // Add fireball
-        addFireball(player);
-        player.lastTimeFiredFireball = timestamp;
+        addFireball(state.player);
+        state.player.lastTimeFiredFireball = timestamp;
         isCollision(wizard, wizard);
     } else {
         wizard.classList.remove('wizard-fire');
@@ -173,8 +173,8 @@ function gameAction(timestamp) { // Game loop
     });
 
     // Apply movement
-    wizard.style.top = player.y + 'px';
-    wizard.style.left = player.x + 'px';
+    wizard.style.top = state.player.y + 'px';
+    wizard.style.left = state.player.x + 'px';
 
     //Apply score
     gamePoints.textContent = scene.score;
