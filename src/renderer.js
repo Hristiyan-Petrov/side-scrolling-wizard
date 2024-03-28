@@ -118,10 +118,11 @@ function draw(timestamp, state) { // Game loop; get the new state as param
     let fireballs = document.querySelectorAll('.fireball');
 
     state.attacks.forEach(a => a.el.style.left = a.x + 'px');
+    // This is the same is:
+    // fireball.x += game.speed * game.fireballMultiplier;
+    // fireball.style.left = fireball.x + 'px';
 
     fireballs.forEach(fireball => {
-        // fireball.x += game.speed * game.fireballMultiplier;
-        // fireball.style.left = fireball.x + 'px';
 
         if (fireball.x + fireball.offsetWidth > gameArea.offsetWidth) {
             fireball.remove();
