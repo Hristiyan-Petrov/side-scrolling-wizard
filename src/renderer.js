@@ -14,7 +14,9 @@ gameStart.addEventListener('click', onGameStart);
 document.addEventListener('keydown', onKeyDown);
 document.addEventListener('keyup', onKeyUp);
 
-let state = initialState();
+let state = initialState({
+    areaWidth: gameArea.offsetWidth
+});
 
 function onGameStart(e) {
     e.currentTarget.classList.add('hide');
@@ -118,16 +120,16 @@ function draw(timestamp, state) { // Game loop; get the new state as param
     let fireballs = document.querySelectorAll('.fireball');
 
     state.attacks.forEach(a => a.el.style.left = a.x + 'px');
-    // This is the same is:
+    // This is the same as:
     // fireball.x += game.speed * game.fireballMultiplier;
     // fireball.style.left = fireball.x + 'px';
 
-    fireballs.forEach(fireball => {
+    // fireballs.forEach(fireball => {
+    //     if (fireball.x + fireball.offsetWidth > gameArea.offsetWidth) {
+    //         fireball.remove();
+    //     }
+    // });
 
-        if (fireball.x + fireball.offsetWidth > gameArea.offsetWidth) {
-            fireball.remove();
-        }
-    });
 
     // Apply gravitation
     let isInAir = state.player.y + state.player.heigth <= gameArea.offsetHeight;

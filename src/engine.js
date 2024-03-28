@@ -9,7 +9,9 @@
 
 let keys = {};
 
-const initialState = () => ({ // Outer brackets in return are required for short-hand syntax for directly object returning
+const initialState = ({
+    areaWidth
+}) => ({ // Outer brackets in return are required for short-hand syntax for directly object returning
     player: {
         x: 150,
         y: 150,
@@ -21,7 +23,10 @@ const initialState = () => ({ // Outer brackets in return are required for short
         isActiveGame: true,
         score: 0,
         lastCloudSpawn: 0, // time
-        lastBugSpawn: 0
+        lastBugSpawn: 0,
+        areaWidth,
+        attackWidth: 40,
+        attackHeigth: 40
     },
     clouds: [],
     attacks: [],
@@ -29,11 +34,20 @@ const initialState = () => ({ // Outer brackets in return are required for short
 });
 
 // Functions for rerendering the each following
-const nextPlayer = state => state.player; 
-const nextScene = s => s.scene; 
-const nextClouds = s => s.clouds; 
-const nextAttacks = s => s.attacks.map(a => ({...a, x: a.x + game.speed * game.fireballMultiplier})); // Create new object the same as a, but modified property 'x' 
-const nextBugs = s => s.bugs; 
+const nextPlayer = state => state.player;
+const nextScene = s => s.scene;
+const nextClouds = s => s.clouds;
+const nextAttacks = s => s.attacks
+    .filter(a => {
+        // Remove out of boundaries or hit fireballs 
+        if (a.x + s.scene.attackWidth > s.scene.areaWidth) { // Same as (fireball.x + fireball.offsetWidth > gameArea.offsetWidth)
+            a.el.remove();
+            return false; // So it can be removed from the array
+        }
+        return true;
+    })
+    .map(a => ({ ...a, x: a.x + game.speed * game.fireballMultiplier })); // Create new object the same as a, but modified property 'x' 
+const nextBugs = s => s.bugs;
 
 const next = (state) => ({ // Outer brackets in return are required for short-hand syntax for directly object returning
     player: nextPlayer(state),
