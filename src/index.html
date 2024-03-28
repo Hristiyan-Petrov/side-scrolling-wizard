@@ -69,12 +69,12 @@
             scene.score++;
 
             // Add clouds in background - imitate forward player movement
-            if (timestamp - scene.lastCloudSpawn > game.cloudSpawnInterval) {
+            if (timestamp - scene.lastCloudSpawn > game.cloudSpawnInterval + 10 * Math.random()) {
                 let cloud = document.createElement('div');
                 cloud.classList.add('cloud');
-                cloud.x = gameArea.offsetWidth - 200;
+                cloud.x = gameArea.offsetWidth - (200);
                 cloud.style.left = cloud.x + 'px';
-                cloud.style.top = '100px';
+                cloud.style.top = (gameArea.offsetHeight - 200) * Math.random() + 'px'; // Spawn clouds at different hight levels - more natural looking
 
                 gameArea.appendChild(cloud);
                 scene.lastCloudSpawn = timestamp;
@@ -152,7 +152,7 @@
             fireball.classList.add('fireball');
 
             // Set starting (spawning) position based on player position
-            fireball.style.top = (player.y + player.heigth / 3  - 5) + 'px';
+            fireball.style.top = (player.y + player.heigth / 3 - 5) + 'px';
             fireball.x = player.x + player.width;
             fireball.style.left = fireball.x + 'px';
             gameArea.appendChild(fireball);
