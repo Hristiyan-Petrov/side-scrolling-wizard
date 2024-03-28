@@ -15,7 +15,10 @@ document.addEventListener('keydown', onKeyDown);
 document.addEventListener('keyup', onKeyUp);
 
 let state = initialState({
-    areaWidth: gameArea.offsetWidth
+    areaWidth: gameArea.offsetWidth,
+    attackWidth: 40,
+    bugWidth: 60,
+    bugHeight: 60
 });
 
 function onGameStart(e) {
@@ -80,6 +83,12 @@ function draw(timestamp, state) { // Game loop; get the new state as param
 
         gameArea.appendChild(bug);
         state.scene.lastBugSpawn = timestamp;
+
+        state.bugs.push({
+            x: gameArea.offsetWidth - 60,
+            y: (gameArea.offsetHeight - 60) * Math.random(),
+            el: bug
+        });
     }
 
     // Add clouds in background - imitate forward player movement
@@ -119,8 +128,7 @@ function draw(timestamp, state) { // Game loop; get the new state as param
     // Modify fireballs positions
     let fireballs = document.querySelectorAll('.fireball');
 
-    state.attacks.forEach(a => a.el.style.left = a.x + 'px');
-    // This is the same as:
+    // This is the same as the below line:
     // fireball.x += game.speed * game.fireballMultiplier;
     // fireball.style.left = fireball.x + 'px';
 
@@ -129,7 +137,7 @@ function draw(timestamp, state) { // Game loop; get the new state as param
     //         fireball.remove();
     //     }
     // });
-
+    state.attacks.forEach(a => a.el.style.left = a.x + 'px');
 
     // Apply gravitation
     let isInAir = state.player.y + state.player.heigth <= gameArea.offsetHeight;

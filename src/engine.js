@@ -9,9 +9,7 @@
 
 let keys = {};
 
-const initialState = ({
-    areaWidth
-}) => ({ // Outer brackets in return are required for short-hand syntax for directly object returning
+const initialState = options => ({ // Outer brackets in return are required for short-hand syntax for directly object returning
     player: {
         x: 150,
         y: 150,
@@ -24,30 +22,41 @@ const initialState = ({
         score: 0,
         lastCloudSpawn: 0, // time
         lastBugSpawn: 0,
-        areaWidth,
-        attackWidth: 40,
-        attackHeigth: 40
+        ...options
+
     },
     clouds: [],
     attacks: [],
     bugs: []
 });
 
-// Functions for rerendering the each following
+// Functions for rerendering the each of following
 const nextPlayer = state => state.player;
 const nextScene = s => s.scene;
 const nextClouds = s => s.clouds;
 const nextAttacks = s => s.attacks
     .filter(a => {
         // Remove out of boundaries or hit fireballs 
-        if (a.x + s.scene.attackWidth > s.scene.areaWidth) { // Same as (fireball.x + fireball.offsetWidth > gameArea.offsetWidth)
-            a.el.remove();
+        if (a.x + s.scene.attackWidth > s.scene.areaWidth - 30) { // Same as (fireball.x + fireball.offsetWidth > gameArea.offsetWidth)
+            removeEl(a.el);
             return false; // So it can be removed from the array
         }
         return true;
     })
     .map(a => ({ ...a, x: a.x + game.speed * game.fireballMultiplier })); // Create new object the same as a, but modified property 'x' 
-const nextBugs = s => s.bugs;
+
+const nextBugs = s => s.bugs
+    .filter(b => {
+        if (b.x + s.scene.bugWidth <= 0) {
+            removeEl(b.el);
+            return false;
+        }
+        return true;
+    })
+    .map(b => {
+        b.x -= game.speed * 6;
+        return b;
+    });
 
 const next = (state) => ({ // Outer brackets in return are required for short-hand syntax for directly object returning
     player: nextPlayer(state),
@@ -74,9 +83,9 @@ function gameOverAction() {
 
 function addFireball(state) {
     let fireball = document.createElement('div');
-    fireball.classList.add('fireball');
 
     // Set starting (spawning) position based on player position
+    fireball.classList.add('fireball');
     fireball.style.top = (state.player.y + state.player.heigth / 3 - 5) + 'px';
     fireball.x = state.player.x + state.player.width;
     fireball.style.left = fireball.x + 'px';
