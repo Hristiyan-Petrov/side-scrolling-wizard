@@ -28,12 +28,18 @@ const initialState = () => ({ // Outer brackets in return are required for short
     bugs: []
 });
 
+const nextPlayer = state => state.player; // Function for rerendering the following
+const nextScene = s => s.scene; // Function for rerendering the following
+const nextClouds = s => s.clouds; // Function for rerendering the following
+const nextAttacks = s => s.attacks; // Function for rerendering the following
+const nextBugs = s => s.bugs; // Function for rerendering the following
+
 const next = (state) => ({ // Outer brackets in return are required for short-hand syntax for directly object returning
-    player: state.player,
-    scene: state.scene,
-    clouds: state.clouds,
-    attacks: state.attacks,
-    bugs: state.bugs
+    player: nextPlayer(state),
+    scene: nextScene(state),
+    clouds: nextClouds(state),
+    attacks: nextAttacks(state),
+    bugs: nextBugs(state)
 });
 
 function isCollision(firstElement, secondElement) {
