@@ -116,9 +116,12 @@ function draw(timestamp, state) { // Game loop; get the new state as param
 
     // Modify fireballs positions
     let fireballs = document.querySelectorAll('.fireball');
+
+    state.attacks.forEach(a => a.el.style.left = a.x + 'px');
+
     fireballs.forEach(fireball => {
-        fireball.x += game.speed * game.fireballMultiplier;
-        fireball.style.left = fireball.x + 'px';
+        // fireball.x += game.speed * game.fireballMultiplier;
+        // fireball.style.left = fireball.x + 'px';
 
         if (fireball.x + fireball.offsetWidth > gameArea.offsetWidth) {
             fireball.remove();
@@ -152,7 +155,7 @@ function draw(timestamp, state) { // Game loop; get the new state as param
     if (keys.Space && timestamp - state.player.lastTimeFiredFireball > game.fireInterval) {
         wizard.classList.add('wizard-fire');
         // Add fireball
-        addFireball(state.player);
+        addFireball(state);
         state.player.lastTimeFiredFireball = timestamp;
         isCollision(wizard, wizard);
     } else {

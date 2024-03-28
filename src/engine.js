@@ -28,11 +28,12 @@ const initialState = () => ({ // Outer brackets in return are required for short
     bugs: []
 });
 
-const nextPlayer = state => state.player; // Function for rerendering the following
-const nextScene = s => s.scene; // Function for rerendering the following
-const nextClouds = s => s.clouds; // Function for rerendering the following
-const nextAttacks = s => s.attacks; // Function for rerendering the following
-const nextBugs = s => s.bugs; // Function for rerendering the following
+// Functions for rerendering the each following
+const nextPlayer = state => state.player; 
+const nextScene = s => s.scene; 
+const nextClouds = s => s.clouds; 
+const nextAttacks = s => s.attacks.map(a => ({...a, x: a.x + game.speed * game.fireballMultiplier})); // Create new object the same as a, but modified property 'x' 
+const nextBugs = s => s.bugs; 
 
 const next = (state) => ({ // Outer brackets in return are required for short-hand syntax for directly object returning
     player: nextPlayer(state),
@@ -57,14 +58,21 @@ function gameOverAction() {
     gameOver.classList.remove('hide');
 }
 
-function addFireball(player) {
+function addFireball(state) {
     let fireball = document.createElement('div');
     fireball.classList.add('fireball');
 
     // Set starting (spawning) position based on player position
-    fireball.style.top = (player.y + player.heigth / 3 - 5) + 'px';
-    fireball.x = player.x + player.width;
+    fireball.style.top = (state.player.y + state.player.heigth / 3 - 5) + 'px';
+    fireball.x = state.player.x + state.player.width;
     fireball.style.left = fireball.x + 'px';
+
+    state.attacks.push({
+        x: state.player.x, // + state.player.width;
+        y: state.player.y + state.player.heigth / 3 - 5,
+        el: fireball // Not good practise to include DOM element in the state but will do for now to save time. Can optimize it later
+    });
+
     gameArea.appendChild(fireball);
 }
 
