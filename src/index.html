@@ -32,13 +32,15 @@
             x: 150,
             y: 150,
             width: 0,
-            heigth: 0
+            heigth: 0,
+            lastTimeFiredFireball: 0
         };
 
         let game = {
             speed: 2,
             movingMultiplier: 4,
-            fireballMultiplier: 5
+            fireballMultiplier: 5,
+            fireInterval: 1000 // 1000 ms
         };
 
         let scene = {
@@ -60,9 +62,8 @@
 
         }
 
-        function gameAction() { // Game loop
+        function gameAction(timestamp) { // Game loop
             const wizard = document.querySelector('.wizard');
-
             scene.score++;
 
             // Modify fireballs positions
@@ -100,10 +101,11 @@
             }
 
             // Fire with space
-            if (keys.Space) {
+            if (keys.Space && timestamp - player.lastTimeFiredFireball > game.fireInterval) {
                 wizard.classList.add('wizard-fire');
                 // Add fireball
                 addFireball(player);
+                player.lastTimeFiredFireball = timestamp;
             } else {
                 wizard.classList.remove('wizard-fire');
             }
