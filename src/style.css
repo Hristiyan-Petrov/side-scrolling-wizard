@@ -36,6 +36,17 @@ body {
     text-align: center;
 }
 
+.game-over {
+    position: absolute;
+    width: 50%;
+    background-color: red;
+    top: 100px;
+    left: 25%;
+    z-index: 1;
+    text-align: center;
+    padding: 50px;
+}
+
 .wizard {
     z-index: 100;
     position: absolute;
