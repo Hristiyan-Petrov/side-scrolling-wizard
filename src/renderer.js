@@ -92,7 +92,7 @@ function draw(timestamp, state) { // Game loop; get the new state as param
         state.bugs.push({
             x: gameArea.offsetWidth - 60,
             y: (gameArea.offsetHeight - 60) * Math.random(),
-            w: bug.offsetHeight, 
+            w: bug.offsetWidth, 
             h: bug.offsetHeight,
             el: bug
         });
@@ -108,6 +108,14 @@ function draw(timestamp, state) { // Game loop; get the new state as param
 
         gameArea.appendChild(cloud);
         state.scene.lastCloudSpawn = timestamp;
+        
+        state.clouds.push({
+            x: gameArea.offsetWidth - (200),
+            y: (gameArea.offsetHeight - 200) * Math.random() + 'px',
+            w: cloud.offsetWidth,
+            h: cloud.offsetHeight,
+            el: cloud
+        });
     }
 
     // Modify bug positions
@@ -125,19 +133,18 @@ function draw(timestamp, state) { // Game loop; get the new state as param
 
     // Modify cloud positions
     let clouds = document.querySelectorAll('.cloud');
-    clouds.forEach(cloud => {
-        cloud.x -= game.speed;
-        cloud.style.left = cloud.x + 'px';
+    // clouds.forEach(cloud => {
+    //     cloud.x -= game.speed;
+    //     cloud.style.left = cloud.x + 'px';
 
-        if (cloud.x + cloud.offsetWidth <= 0) {
-            cloud.remove();
-        }
-    });
+    //     if (cloud.x + cloud.offsetWidth <= 0) {
+    //         cloud.remove();
+    //     }
+    // });
+    state.clouds.forEach(c => c.el.style.left = c.x + 'px');
 
     // Modify fireballs positions
     let fireballs = document.querySelectorAll('.fireball');
-
-    // This is the same as the below line:
     // fireball.x += game.speed * game.fireballMultiplier;
     // fireball.style.left = fireball.x + 'px';
 

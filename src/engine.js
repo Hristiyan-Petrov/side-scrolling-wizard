@@ -2,7 +2,7 @@
 // with minimal overlapping between the functions of the individual units. 
 // The separation of concerns is achieved using modularization, encapsulation and arrangement in software layers.
 
-// Include only logic, operatoins, calculations and exclude any visualization and DOM manipulations
+// Include only logic, operations, calculations and exclude any visualization and DOM manipulations
 // That means - Positioning, collision detecting
 // Good practise to follow this method - devide different part from one another - leads to great code scaling
 // Avoid spaghetti code - everything is mixed - as it is as of starting this Refactoring (everything is in one file)
@@ -35,11 +35,24 @@ const initialState = options => ({ // Outer brackets in return are required for 
 // Functions for rerendering the each of following
 const nextPlayer = state => state.player;
 const nextScene = s => s.scene;
-const nextClouds = s => s.clouds;
+
+const nextClouds = s => s.clouds
+    .filter(c => {
+        if (c.x + c.w <= 100) {
+            removeEl(c.el);
+            return false;
+        }
+        return true;
+    })
+    .map(c => {
+        c.x -= game.speed * 6;
+        return c;
+    });
+
 const nextAttacks = s => s.attacks
     .filter(a => {
         // Remove out of boundaries or hit fireballs 
-        if (a.x + s.scene.attackWidth > s.scene.areaWidth - 30) { // Same as (fireball.x + fireball.offsetWidth > gameArea.offsetWidth)
+        if (a.x + s.scene.attackWidth > s.scene.areaWidth - 10) { // Same as (fireball.x + fireball.offsetWidth > gameArea.offsetWidth)
             removeEl(a.el);
             return false; // So it can be removed from the array
         }
