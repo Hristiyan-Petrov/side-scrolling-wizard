@@ -44,10 +44,7 @@ const nextClouds = s => s.clouds
         }
         return true;
     })
-    .map(c => {
-        c.x -= game.speed * 6;
-        return c;
-    });
+    .map(c => ({ ...c, x: c.x -= game.speed}));
 
 const nextAttacks = s => s.attacks
     .filter(a => {
@@ -74,7 +71,7 @@ const nextBugs = s => s.bugs
         return true;
     })
     .map(b => {
-        b.x -= game.speed * 6;
+        b.x -= game.speed * game.bugMultiplier;
         return b;
     });
 
